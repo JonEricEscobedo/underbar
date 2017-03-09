@@ -105,7 +105,16 @@
   };
 
   // Produce a duplicate-free version of the array.
-  _.uniq = function(array) {
+  _.uniq = function(array) {  // [1, 2, 1, 3, 1, 4] -> [1, 2, 3, 4]
+    var result = [];
+
+    _.each(array, function(item) {
+      if (_.indexOf(result, item) === -1) {
+        result.push(item);
+      }
+    });
+
+    return result;
   };
 
 
