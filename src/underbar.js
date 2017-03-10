@@ -323,6 +323,23 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    // Initalize an object as a 'answerLookUp' - this will hold the functions result
+      // If answerLookUp doesn't contain the arguments
+        // Run the function and store the answer in answerLookUp
+      // Else, if answerLookUp already contains the arguments
+        // Return the existing answer
+        
+    var answerLookUp = {}
+
+    return function() {
+      if (answerLookUp[arguments]) {
+        return answerLookUp[arguments];
+      } else {
+        answerLookUp[arguments] = func.apply(this, arguments);
+        return answerLookUp[arguments];
+      }
+    }
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
