@@ -256,14 +256,11 @@
   _.extend = function(obj) { // { x: 1 }, { a: 2 }, { b:3 }
     var destination = arguments[0];
     //var source = arguments[1];
+    // Refactored once I realized that my _.defaults solution nearly looked the same!
 
     _.each(arguments, function(args) {
       _.each(args, function(value, key) {
-        if (!destination.hasOwnProperty(key)) {
-          destination[key] = value;
-        } else {
-          destination[key] = value
-        }
+        destination[key] = value;
       });
     })
       
@@ -273,6 +270,16 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var destination = arguments[0];
+
+    _.each(arguments, function(args) {
+      _.each(args, function(value, key) {
+        if (!destination.hasOwnProperty(key)) {
+          destination[key] = value;
+        }
+      });
+    })
+    return destination;
   };
 
 
