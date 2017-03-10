@@ -328,7 +328,7 @@
         // Run the function and store the answer in answerLookUp
       // Else, if answerLookUp already contains the arguments
         // Return the existing answer
-        
+
     var answerLookUp = {}
 
     return function() {
@@ -349,6 +349,12 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var argToArr = Array.prototype.slice.apply(arguments);
+    var args = argToArr.slice(2);
+
+    return setTimeout(function() {
+      return func.apply(this, args);
+    }, wait)
   };
 
 
