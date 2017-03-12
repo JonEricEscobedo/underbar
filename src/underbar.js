@@ -330,13 +330,16 @@
         // Return the existing answer
 
     var answerLookUp = {}
-
+    //console.log(answerLookUp, 'before');
     return function() {
-      if (answerLookUp[arguments]) {
-        return answerLookUp[arguments];
+      //var args = Array.prototype.slice.apply(arguments);
+      var args = JSON.stringify(arguments);
+      if (answerLookUp.hasOwnProperty(args)) {
+        return answerLookUp[args];
       } else {
-        answerLookUp[arguments] = func.apply(this, arguments);
-        return answerLookUp[arguments];
+        answerLookUp[args] = func.apply(this, arguments);
+        //console.log(answerLookUp, 'after')
+        return answerLookUp[args];
       }
     }
 
