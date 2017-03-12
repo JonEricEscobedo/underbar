@@ -369,6 +369,24 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var newArr = array.slice();
+
+    // -- To shuffle an array a of n elements (indices 0..n-1):
+    // for i from n−1 downto 1 do
+    //      j ← random integer such that 0 ≤ j ≤ i
+    //      exchange a[j] and a[i]
+
+    var cache;
+
+    for (var i = newArr.length - 1; i >= 1; i--) {
+      var j = Math.floor(Math.random() * (i+1)); // Inclusive
+      cache = newArr[j];
+      newArr[j] = newArr[i];
+      newArr[i] = cache;
+    }
+    return newArr;
+    
+
   };
 
 
