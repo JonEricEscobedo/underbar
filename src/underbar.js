@@ -172,20 +172,18 @@
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
                    // collection, callback, startingValue
-
-    if (accumulator === undefined ) {
-      //return _.first(collection);
-      accumulator = _.first(collection);
-      _.each((_.last(collection, (collection.length-1))), function(item) {
-        accumulator = iterator(accumulator, item);
-      });
+    if (accumulator === undefined) {
+      var accu = _.first(collection)
+      collection = _.last(collection, (collection.length - 1))
     } else {
-      _.each(collection, function(item) {
-        accumulator = iterator(accumulator, item);
-      });  
+      accu = accumulator;  
     }
+    
+    _.each(collection, function(element) {
+      accu = iterator(accu, element);
+    });
 
-    return accumulator;
+    return accu;
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -229,9 +227,16 @@
       iterator = _.identity;
     }
 
-    return !_.every(collection, function(element) {
-      return !iterator(element);
-    })
+    // Refactored for clarity (for my sake)
+    var truthy = false;
+
+    _.every(collection, function(item) {
+      if (iterator(item)) {
+        truthy = true;
+      }
+    });
+
+    return truthy;
   };
 
 
