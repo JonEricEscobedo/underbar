@@ -409,6 +409,20 @@
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
+    var result = [];
+
+    _.each(collection, function(element) {
+      if (typeof functionOrKey === 'function') {
+        result.push(functionOrKey.apply(element));  
+      } else {
+        var func = element[functionOrKey];
+        result.push(func.apply(element));
+      }
+      
+      
+    });
+
+    return result;
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -416,6 +430,16 @@
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    if (typeof iterator === 'function') {
+      collection = collection.sort(function(a, b) {
+        return iterator(a) - iterator(b);
+      });
+    } else {
+      collection = collection.sort(function(a, b) {
+        return a[iterator] - b[iterator];
+      });
+    }
+    return collection;
   };
 
   // Zip together two or more arrays with elements of the same index
@@ -430,7 +454,21 @@
   // The new array should contain all elements of the multidimensional array.
   //
   // Hint: Use Array.isArray to check if something is an array
-  _.flatten = function(nestedArray, result) {
+  _.flatten = function(nestedArray) {
+    var result = [];
+
+    function flattenize(element) {
+      if (!Array.isArray(element)) {
+        result.push(element);
+      } else {
+        _.each(element, function(item) {
+          flattenize(item);
+        });
+      }
+    }
+    flattenize(nestedArray);
+    
+    return result;
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
