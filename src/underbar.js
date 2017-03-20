@@ -448,6 +448,18 @@
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
+    var result = [];
+    
+    for (var idx = 0; idx < arguments.length; idx++) {
+      var tempArr = []
+
+      for (var idx2 = 0; idx2 < arguments.length; idx2++) {
+        tempArr.push(arguments[idx2].shift());
+      }
+
+      result.push(tempArr);
+    }
+    return result;
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
@@ -474,11 +486,37 @@
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
+    var args = Array.prototype.slice.call(arguments);
+    args = _.flatten(args);
+    var result = [];
+    
+    for (var idx1 = 0; idx1 < args.length; idx1++) {
+      for (var idx2 = idx1 + 1; idx2 < args.length; idx2++) {
+        var count = 0;
+        if (args[idx1] === args[idx2]) {
+          count++;
+          if (count >= 1) {
+            result.push(args[idx2]);
+          }
+        }
+      }
+    }
+    return result;
   };
 
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function(array) {
+    var source = arguments[0];
+    var overlappingArgs = Array.prototype.slice.call(arguments);
+    overlappingArgs = _.intersection(overlappingArgs);
+
+    for (var idx = 0; idx < overlappingArgs.length; idx++) {
+      var index = _.indexOf(source, overlappingArgs[idx]);
+      source.splice(index, 1)
+    }
+
+    return source;
   };
 
   // Returns a function, that, when invoked, will only be triggered at most once
